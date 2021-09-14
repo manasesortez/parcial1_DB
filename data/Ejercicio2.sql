@@ -27,7 +27,7 @@ SELECT * FROM estudiantes;
 
 CREATE TABLE materia(
     materia_id INT CHECK (materia_id > 0) NOT NULL IDENTITY(111,1),
-    materia_nombre VARCHAR(30) CHECK (materia_nombre IN ('Introduccion a la Programacion','Redes de Area Local','Base de Datos','Matematica I', 'Expresion Oral y Escrita')) UNIQUE NOT NULL,
+    materia_nombre VARCHAR(30) CHECK (materia_nombre IN ('Introduccion a la Programacion','Redes de Area Local','Base de Datos','Matematica I', 'Expresion Oral y Escrita', 'Aplicaciones para Redes')) UNIQUE NOT NULL,
     PRIMARY KEY (materia_id)
 );
 
@@ -55,9 +55,7 @@ CREATE TABLE notas(
     CONSTRAINT FK_MAT_ID FOREIGN KEY (materia_id) REFERENCES materia(materia_id) ON UPDATE CASCADE
 );
 
-DROP TABLE notas;
 SELECT * FROM notas;
-
 
 SET IDENTITY_INSERT dbo.notas ON
 INSERT INTO dbo.notas
@@ -77,3 +75,63 @@ VALUES
 SET IDENTITY_INSERT dbo.notas OFF
 
 SELECT * FROM notas;
+
+/** 1. Muestre la informacion de todos los estudiantes con todos sus campos **/
+
+SELECT * FROM dbo.estudiantes;
+
+/** 2. Mostrar los apellidos y direccion del estudiante con IdEstudiante=1.**/
+
+SELECT estudiantes_apellidos AS Apellido, estudiantes_direccion AS Direccion
+FROM dbo.estudiantes
+WHERE estudiantes_id= 1;
+
+/** 3. Mostrar los datos de las materias cuyo IdMateria es igual a 111 y 113**/
+
+SELECT * FROM materia WHERE materia_id = 111 OR materia_id = 113;
+
+/** 4. Mostrar los nombres y apellidos de todos los estudiantes**/
+
+SELECT estudiantes_nombre AS NOMBRE, estudiantes_apellidos AS APELLIDO
+FROM dbo.estudiantes;
+
+/** 5. Modificar el nombre del Estudiante Edilberto por Roberto**/
+/**Roberto**/
+UPDATE estudiantes SET estudiantes_nombre = 'Roberto' WHERE estudiantes_id = 3;
+
+SELECT * FROM dbo.estudiantes;
+
+/** 6. Modificar el nombre de la materia de Redes de Area Local por Aplicaciones para Redes. **/
+
+UPDATE materia SET materia_nombre = 'Aplicaciones para Redes' where materia_id = 112;
+
+SELECT * FROM dbo.materia;
+
+/** 7. De la tabla Notas, mostrar el promedio de notas por cada materia, ordenarlos de forma descendente (Nota).**/
+
+SELECT materia_id AS MATERIA_ID, notas_nota AS PROMEDIO
+FROM dbo.notas
+ORDER BY  PROMEDIO ASC;
+
+/** 8. De la tabla notas, Mostrar el promedio por cada id de materia.**/
+
+SELECT materia_id AS MATERIA_ID, AVG(notas_nota) AS PROMEDIO
+FROM notas
+GROUP BY notas.materia_id
+ORDER BY PROMEDIO ASC;
+
+/** 9. De la tabla alumno mostrar los datos en donde la direccion contenga la palabra “colonia”**/
+
+SELECT * FROM dbo.estudiantes
+WHERE estudiantes_direccion LIKE 'colonia%';
+
+/** 10. Eliminar el registro donde IdEstudiante es igual a 6.**/
+
+SELECT * FROM estudiantes;
+
+DELETE FROM estudiantes
+WHERE estudiantes_id = 6;
+
+DELETE FROM notas
+WHERE estudiantes_id = 6;
+
