@@ -119,9 +119,11 @@ CREATE TABLE prestamo(
     prestamo_fecha DATE NOT NULL,
     prestamo_devolucion DATE NOT NULL,
     PRIMARY KEY(prestamo_id),
-    CONSTRAINT FK_LIB_ITEM FOREIGN KEY (libroCopia_item) REFERENCES libroCopia(librocopia_item) ON UPDATE CASCADE,
+    CONSTRAINT FK_LIB_ITEM FOREIGN KEY (libroCopia_item) REFERENCES libroCopia(libroCopia_item) ON UPDATE CASCADE,
     CONSTRAINT FK_USU_CAN FOREIGN KEY (usuario_carnet) REFERENCES dbo.usuario(usuario_carnet) ON UPDATE CASCADE
 );
+
+drop table dbo.prestamo;
 
 SET IDENTITY_INSERT dbo.prestamo ON
 INSERT INTO prestamo(usuario_carnet, libroCopia_item, prestamo_fecha, prestamo_devolucion)
@@ -134,5 +136,3 @@ VALUES
 SET IDENTITY_INSERT dbo.prestamo OFF
 
 SELECT * FROM dbo.prestamo;
-
-
